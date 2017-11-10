@@ -1,7 +1,12 @@
-# kube-centos-ansible
+# Kucean
 
 Install a kubernetes cluster on CentOS VMs (or baremetal), including CNI pod
 networking (defaults to Flannel, also has ability to deploy Weave and Multus).
+
+kube-centos-ansible is the project name, which can be compactly referred to as
+_kucean_ i.e. (ku)bernetes-(ce)ntos-(an)sible
+
+**kucean** p. koo-see-ehn
 
 ## Want some more detail?
 
@@ -90,6 +95,20 @@ version. This version number comes from a `yum search kubelet
 
 ```
 ansible-playbook -i inventory/vms.local.generated kube-install.yml -e 'kube_version=1.6.7-0'
+```
+
+## Install specific binaries
+
+By default, we install the kubelet (and `kubeadm`, `kubectl` and the core CNI plugins) via RPM. However, if you'd like to install specific binaries for either the kubelet, kubeadm or kubetl -- you can do so by specifying that you'd like to perform a binary install and specify URLs (that point to, say, binaries in a GitHub release).
+
+There are sample variables provided in the `./group_vars/all.yml` file, and you can set them up such as:
+
+```
+binary_install: true
+binary_kubectl_url: https://github.com/leblancd/kubernetes/releases/download/v1.9.0-alpha.1.ipv6.1b/kubectl
+binary_kubeadm_url: https://github.com/leblancd/kubernetes/releases/download/v1.9.0-alpha.1.ipv6.1b/kubeadm
+binary_kubelet_url: https://github.com/leblancd/kubernetes/releases/download/v1.9.0-alpha.1.ipv6.1b/kubelet
+binary_install_force_redownload: false
 ```
 
 ## Using CRI-O
