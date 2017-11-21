@@ -42,3 +42,17 @@
     kubectl create -f {{ ansible_env.HOME }}/multus-resources/macvlan.yml
   when: "'macvlan-conf' not in check_network_crds.stdout"
 
+- name: Get the clusterrolebindings
+  shell: >
+    kubectl get clusterrolebindings
+  register: output_crb
+
+- name: Create clusterrolebindings for each machine
+  shell: >
+    kubectl create clusterrolebinding multus-node-{{ hostvars[item]['inventory_hostname'] }}
+    --clusterrole=system:node
+    --user=system:node:{{ hostvars[item]['inventory_hostname'] }}
+  with_items:
+    - "{{ groups['nodes'] + groups['master'] }}"
+  when: >
+    "hostvars[item]['inventory_hostname']" not in output_crb.stdout

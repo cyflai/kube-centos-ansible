@@ -16,7 +16,7 @@ crio_version: v1.0.0-rc1
 # - weave
 # - none
 # - multus
-pod_network_type: "multus"
+pod_network_type: "flannel"
 pod_network_cidr: "10.244.0.0"
 
 # General config
@@ -68,6 +68,7 @@ kubectl_proxy_port: 8088
 # --------------------------- -
 # multus-cni vars          - -
 # ------------------------- -
+multus_use_crd: true
 multus_ipam_subnet: "192.168.1.0/24"
 multus_ipam_rangeStart: "192.168.1.200"
 multus_ipam_rangeEnd: "192.168.1.216"
